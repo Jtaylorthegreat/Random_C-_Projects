@@ -65,11 +65,12 @@ int main()
 		return -1;
 	}
 	char buf [4096];
-	int sendmessage = send(csocket, KEY.c_str(), KEY.size() +1, 0);
+	int sendmessage = send(csocket, KEY.c_str(), KEY.size(), 0);
 	if (sendmessage < 0){
 		cerr << "Error sending" << endl;
 		return -1;
 	}
+		close(csocket);
     sleep(30);
 	}
 	
