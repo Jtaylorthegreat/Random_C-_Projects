@@ -32,8 +32,7 @@ void hblisten (int clientSocket){
 	if (clienthblisten >1){
 		clientok == 1;
 	}
-		
- cout << "Last successful client heartbeat " << servtime << endl;
+ cout << "client " << string(buf, 0, clienthblisten) << " Last successful client heartbeat " << servtime << endl;		
 }
  
 int main(int argc, char *argv[])
