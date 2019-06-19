@@ -7,6 +7,7 @@
 #include <string.h>
 #include <string>
 #include <stdlib.h>
+#include <ctime>
 
 //had to include stdlib to compile on rhel7
 
@@ -17,6 +18,9 @@ void hblisten (int clientSocket){
     char buf[4096];
     memset(buf, 0, 4096);
     int clienthblisten = recv(clientSocket, buf, 4096, 0);
+	int clientok;
+	time_t now = time(0);
+	char* servtime = ctime(&now);
     if (clienthblisten == -1) {
         cerr << "Error receiving client HB" << endl;
         exit(1);
@@ -25,7 +29,11 @@ void hblisten (int clientSocket){
         cout << "Client disconnected" << endl;
         exit(1);
     }
- cout << string(buf, 0, clienthblisten) << endl;
+	if (clienthblisten >1){
+		clientok == 1;
+	}
+		
+ cout << "Last successful client heartbeat " << servtime << endl;
 }
  
 int main(int argc, char *argv[])
@@ -98,5 +106,3 @@ int main(int argc, char *argv[])
  return 0;
  
 }
- 
- 
