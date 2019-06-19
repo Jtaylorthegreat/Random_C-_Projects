@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     
     
  while (true) {
-    int clientsocket = accept(mysocket, (sockaddr*)&client, &clientSize);
+    clientsocket = accept(mysocket, (sockaddr*)&client, &clientSize);
     
         if (clientsocket < 0) {
             cerr << "Error on accept" << endl;
