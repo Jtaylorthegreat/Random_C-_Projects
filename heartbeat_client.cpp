@@ -28,6 +28,7 @@ int main()
 			getline (cin, interactiveinput);
 			settingfile << interactiveinput << endl;
 			settingfile.close();
+			cout << "Configuration file .agentconfig created" << ".\n";
 		}
 	
 	while (true) {	
