@@ -11,19 +11,6 @@ using namespace std;
 
 int main()
 {
-
-	/*check if port number is provided
-	if (argc != 2) {
-        cerr << "no port number provided after command" << endl;
-        return -1;
-    }*/
-	
-	int csocket = socket(AF_INET, SOCK_STREAM, 0);
-	if (csocket == -1) {
-		cerr << "Can't create socket! Exiting" << endl;
-		return -1;
-	}
-	
 	string agentconfig = ".agentconfig";
 	ifstream fin(agentconfig.c_str());
 		if(!fin) {
@@ -43,8 +30,14 @@ int main()
 			settingfile.close();
 		}
 	
-	
 	while (true) {	
+		
+		int csocket = socket(AF_INET, SOCK_STREAM, 0);
+		if (csocket == -1) {
+			cerr << "Can't create socket! Exiting" << endl;
+			return -1;
+		}
+		
 	ifstream infile;
 	string IP, PORT, KEY;
 		infile.open(".agentconfig");
@@ -70,7 +63,8 @@ int main()
 		cerr << "Error sending" << endl;
 		return -1;
 	}
-		close(csocket);
+		/*keeping socket open*/
+		//close(csocket);
     sleep(30);
 	}
 	
