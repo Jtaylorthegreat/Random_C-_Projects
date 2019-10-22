@@ -11,3 +11,7 @@ heartbeat_server.cpp:
 heartbeat_serverV2.cpp:
 
 		Basic TCP heartbeat server that sets up conf file upon first time setup.
+
+simple-ls.cpp:
+
+		Simple command to list directory contents
