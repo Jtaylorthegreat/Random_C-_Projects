@@ -11,8 +11,3 @@ heartbeat_server.cpp:
 heartbeat_serverV2.cpp:
 
 		Basic TCP heartbeat server that sets up conf file upon first time setup.
-
-**Road Map to implement:**
-
- - TLS connection via Pre-Shared key between client and server
-  - Setting up debug logging
