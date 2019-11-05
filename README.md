@@ -15,3 +15,8 @@ heartbeat_serverV2.cpp:
 simple-ls.cpp:
 
 		Simple command to list directory contents
+		
+		
+simple-copy.cpp:
+     
+                Simple command to copy a file in 4096 pieces 
