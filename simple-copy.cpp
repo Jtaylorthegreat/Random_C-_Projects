@@ -1,3 +1,6 @@
+#Algorithm for breaking up file referenced from the original author here:
+#https://gist.github.com/andschwa/d120be76ba8ebd66cf50 
+
 #include <string.h>
 #include <string>
 #include <sstream>
