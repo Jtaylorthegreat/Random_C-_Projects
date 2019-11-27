@@ -30,8 +30,8 @@ void print_help(){
         printf("|  ------------------------------------------------------------------  | \n");
         printf("|                  Few caveats:                                        | \n");
         printf("|                                                                      | \n");
-        printf("|                  Do not use full path for file                       | \n");
-        printf("|                  for destination a trailing / must be included       | \n");
+        printf("|      1. Do not use full path for file (be in the same directory)     | \n");
+        printf("|      2. For destination a trailing / must be included                | \n");
         printf("|______________________________________________________________________| \n");
 
 
