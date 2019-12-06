@@ -32,6 +32,7 @@ void print_help(){
         printf("|                                                                      | \n");
         printf("|      1. Do not use full path for file (be in the same directory)     | \n");
         printf("|      2. For destination a trailing / must be included                | \n");
+        printf("|      3. Max file size that can be copied is 2GB                      | \n");
         printf("|______________________________________________________________________| \n");
 
 
