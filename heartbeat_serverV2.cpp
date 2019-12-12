@@ -90,7 +90,7 @@ int main()
     bind(mysocket, (sockaddr*)&tech, sizeof(tech));
     
     //added keep alive to socket:
-    int optval;
+    int optval = 1;
     socklen_t optlen = sizeof(optval);
     setsockopt(mysocket, SOL_SOCKET, SO_KEEPALIVE, &optval, optlen); 
     
