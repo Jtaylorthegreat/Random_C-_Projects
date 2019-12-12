@@ -1,5 +1,6 @@
 
 
+
 ## Random C++ Projects
 
 heartbeat_client.cpp	:
@@ -20,3 +21,8 @@ simple-ls.cpp:
 simple-copy.cpp:
      
                 Simple command to copy a file in 4096 pieces 
+
+
+Grabconfig:
+
+                Template to load configuration file values 
