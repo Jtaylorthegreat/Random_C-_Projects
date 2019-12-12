@@ -10,9 +10,7 @@ using namespace std;
 
 string ASSIGNEDVALUE1, ASSIGNEDVALUE2, ASSIGNEDVALUE3, ASSIGNEDVALUE4;
 
-//void grab_config(ifstream& in, configfile& out){
 void grab_config(string filename, ifstream& in, configfile& out){
-    //in.open(".agentconfig");
     in.open(filename);
     string line;
     while(!in.eof()){
