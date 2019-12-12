@@ -1,0 +1,4 @@
+confvalue1 = thisisconfiguration1
+confvalue2 = another
+confvalue3 = random
+confvalue4 = configurationvalue
