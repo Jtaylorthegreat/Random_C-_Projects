@@ -34,4 +34,4 @@ systeminfo.cpp:
 
 mysql-stress-test.cpp:
 		
-		Basic program to create a large number of commits to a database for a set amount of time
+		Basic program to create a large number of commits to a database for a set amount of time. Requires mysql-connector-c++ package
