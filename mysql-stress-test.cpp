@@ -89,8 +89,6 @@ int main(int argc, char *argv[]) {
 		sql::Driver *driver;
 		sql::Connection *con;
 		sql::Statement *stmt;
-		//sql::ResultSet *res;
-		//sql::PreparedStatement *pstmt;  
 		driver = get_driver_instance();
 		con = driver->connect(dbserver.c_str(), dbuser.c_str(), dbpass.c_str());
 		con->setSchema(dbname.c_str());
@@ -109,55 +107,62 @@ int main(int argc, char *argv[]) {
 
 	cout << "Table successfully created" << endl;
 	cout << "running Stress Test for " << runtimeinput << " minutes" << endl;
-	//auto finish = chrono::system_clock::now() + 3min;
-	//auto finish = chrono::system_clock::now() + minutes{3};
 	typedef chrono::duration<int, ratio<60,1> > minutes;
-	//auto finish = chrono::system_clock::now() +chrono::minutes(1);
-	auto finish = chrono::system_clock::now() +chrono::minutes(runtime);
-	do {
 
-		stringstream ssrandomname;
+
+
+
+	auto finish = chrono::system_clock::now() +chrono::minutes(runtime);
+
+	try {
+		sql::Driver *driver;
+		sql::Connection *con;
+		sql::Statement *stmt;
+		driver = get_driver_instance();
+		con = driver->connect(dbserver.c_str(), dbuser.c_str(), dbpass.c_str());
+		con->setSchema(dbname.c_str());
+		con-> setAutoCommit(0);
+  		stmt = con->createStatement();
+
+
+  		stringstream ssrandomname;
 		stringstream ssrandomemail;
     	string randomname, randomemail;
-    	
+	    	
     	ssrandomname << random_string(namelength,randchar);
     	ssrandomemail << random_string(emaillength,randchar);
     	randomname = ssrandomname.str();
     	randomemail = ssrandomemail.str();
 
-		try {
-			sql::Driver *driver;
-			sql::Connection *con;
-			sql::Statement *stmt;
-			//sql::ResultSet *res;
-			driver = get_driver_instance();
-			con = driver->connect(dbserver.c_str(), dbuser.c_str(), dbpass.c_str());
-			con->setSchema(dbname.c_str());
 
-	  		stmt = con->createStatement();
-	  		stringstream formatsqlupdate;
-	  		formatsqlupdate << "INSERT INTO stresstable(userloginname, emailaddress, uniquekey, usertime) VALUES ('" << randomname <<  "', '" << randomemail << "', uuid(), CURRENT_TIMESTAMP)";
-            string updatestatement = formatsqlupdate.str();
-            stmt->execute("START TRANSACTION;");
-            stmt->execute(updatestatement.c_str());
-            stmt->execute("COMMIT;");
-	       	delete stmt;
-	  		delete con;
-		}  catch (sql::SQLException &e) {
-	           cout << "# ERR: " << e.what() << endl;
-	           cout << "Mysql error code: " << e.getErrorCode() << endl;
-	           cout <<  "SQLState: " << e.getSQLState() << endl;
-	           return -1;
-	        }
+  		stringstream formatsqlupdate;
+  		formatsqlupdate << "INSERT INTO stresstable(userloginname, emailaddress, uniquekey, usertime) VALUES ('" << randomname <<  "', '" << randomemail << "', uuid(), CURRENT_TIMESTAMP)";
+	    string updatestatement = formatsqlupdate.str();
+
+		do {
+
+			
+	            stmt->execute("START TRANSACTION;");
+	            stmt->execute(updatestatement.c_str());
+	            stmt->execute("COMMIT;");
+	       	
 	        
-	} while (chrono::system_clock::now() < finish);
+		} while (chrono::system_clock::now() < finish);
+
+	    delete stmt;
+	  	delete con;
+	}  catch (sql::SQLException &e) {
+	    cout << "# ERR: " << e.what() << endl;
+	    cout << "Mysql error code: " << e.getErrorCode() << endl;
+	    cout <<  "SQLState: " << e.getSQLState() << endl;
+	    return -1;
+	}
 
 		try {
 			sql::Driver *driver;
 			sql::Connection *con;
 			sql::Statement *stmt;
 			sql::ResultSet *res;
-			//sql::PreparedStatement *pstmt;  
 			driver = get_driver_instance();
 			con = driver->connect(dbserver.c_str(), dbuser.c_str(), dbpass.c_str());
 			con->setSchema(dbname.c_str());
@@ -166,7 +171,6 @@ int main(int argc, char *argv[]) {
 			res = stmt->executeQuery("select avg(math.timespersecond) as averagenumber from (select usertime,COUNT(usertime) as timespersecond from stresstable GROUP BY usertime ORDER BY timespersecond DESC) math");
 	  			while (res->next()){
 	  				string averagecommits = string(res->getString("averagenumber"));
-	  				//cout << "Average commits per second: " << res->getString(2) << endl;
 	  				cout << "Average commits per second: " << averagecommits << endl;
 	  			}
 	  		delete res;
