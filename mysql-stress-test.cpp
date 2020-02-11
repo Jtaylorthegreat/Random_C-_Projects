@@ -59,6 +59,7 @@ int main(int argc, char *argv[]) {
         	cout << "Usage: ./stress-db database user password sqlserver runtime" << endl;
         	cout << "Example to run for 3 minutes:" << endl;
         	cout << "Example: ./stress-db testdatabase user1 password123 localhost 3" << endl;
+		cout << "Remote DB Example: ./stress-db testdatabase user1 'password123' localhost 3" << endl;
         	return -1;
    	}
 	
@@ -66,6 +67,7 @@ int main(int argc, char *argv[]) {
         	cout << "Usage: ./stress-db database user password sqlserver runtime" << endl;
         	cout << "Example to run for 3 minutes:" << endl;
         	cout << "Example: ./stress-db testdatabase user1 password123 localhost 3" << endl;
+		cout << "Remote DB Example: ./stress-db testdatabase user1 'password123' localhost 3" << endl;
         	return -1;
    	}
 
