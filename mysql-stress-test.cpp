@@ -10,6 +10,7 @@
 #include <functional> 
 #include <algorithm> 
 #include <chrono>
+#include <termios.h>
 
 #include "mysql_connection.h"
 #include "mysql_driver.h"
@@ -53,32 +54,52 @@ string random_string( size_t length, function<char(void)> rand_char )
     return str;
 }
 
+void hideinput(){
+    termios tty;
+    tcgetattr(STDIN_FILENO, &tty);
+    tty.c_lflag &= ~ECHO;
+    tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+}
+void reenableinput(){
+    termios tty;
+    tcgetattr(STDIN_FILENO, &tty);
+    tty.c_lflag |= ECHO;
+    tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+}
 
 int main(int argc, char *argv[]) {
-	if (argc < 5) {
-        	cout << "Usage: ./stress-db user password sqlserver runtime" << endl;
+	if (argc < 4) {
+        	cout << "Usage: ./stress-db user sqlserver runtime" << endl;
         	cout << "Example to run for 3 minutes:" << endl;
-        	cout << "Example: ./stress-db user1 password123 localhost 3" << endl;
-		cout << "Remote DB Example: ./stress-db user1 'password123' localhost 3" << endl;
-        	return -1;
+        	cout << "Example: ./stress-db user1 localhost 3" << endl;
+		   	return -1;
    	}
 	
-	if (argc > 5) {
-        	cout << "Usage: ./stress-db user password sqlserver runtime" << endl;
+	if (argc > 4) {
+        	cout << "Usage: ./stress-db user  sqlserver runtime" << endl;
         	cout << "Example to run for 3 minutes:" << endl;
-        	cout << "Example: ./stress-db user1 password123 localhost 3" << endl;
-		cout << "Remote DB Example: ./stress-db user1 'password123' localhost 3" << endl;
+        	cout << "Example: ./stress-db user1 localhost 3" << endl;
         	return -1;
    	}
 
-
 	string dbuser(argv[1]);
-    string dbpass(argv[2]);
-	string dbserver(argv[3]);
-	string runtimeinput(argv[4]);
+	string dbserver(argv[2]);
+	string runtimeinput(argv[3]);
 	string dbname = "stressdatabase";
 	int runtime;
-	runtime = stoi(runtimeinput);
+	try {
+	    runtime = stoi(runtimeinput);
+	}
+	catch (std::invalid_argument) {
+		cout << "Invalid time value submitted" << endl;
+		return -1;
+	}
+
+	string dbpass;
+	cout << "Enter Password" << endl;
+	hideinput();
+	getline (cin, dbpass);
+	reenableinput();
 
 	const auto ch_set = charset();
 	default_random_engine rng(std::random_device{}()); 
