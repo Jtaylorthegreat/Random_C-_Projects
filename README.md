@@ -27,10 +27,6 @@ Grabconfig:
 
                 Template to load configuration file values 
 		
- 	
-systeminfo.cpp:
-
-                Basic c++ program to pull random system info on linux machines
 
 mysql-stress-test.cpp:
 		
