@@ -41,11 +41,6 @@ void print_help(){
 
 size_t whats_my_size(string filepass) {
     ifstream fcheck(filepass.c_str(), ios::binary);
-        //check added to main below is redundant:
-        /*if(!fcheck){
-            cout << " ERROR --  Unable to open file for transfer: " << filepass.c_str() << ".\n";
-            return 0;
-        }*/
     struct stat passedfile;
     if(stat(filepass.c_str(), &passedfile) != 0) {
         return 0;
