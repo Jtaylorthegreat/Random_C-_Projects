@@ -17,8 +17,6 @@ void read_dirs_in_directory(const std::string& dirname, stringvec& vec)
 	DIR* direc = opendir(dirname.c_str());
     struct dirent * dp;
     while ((dp = readdir(direc)) != NULL) {
-        //vec.push_back(dp->d_name);
-        //if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0)
         if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0 && dp->d_type == isFolder)
         	vec.push_back(dp->d_name);
     }
@@ -31,8 +29,6 @@ void read_files_in_directory(const std::string& dirname, stringvec& vec)
 	DIR* direc = opendir(dirname.c_str());
     struct dirent * dp;
     while ((dp = readdir(direc)) != NULL) {
-        //vec.push_back(dp->d_name);
-        //if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0)
         if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0 && dp->d_type == isFile)
         	vec.push_back(dp->d_name);
     }
@@ -44,7 +40,6 @@ void read_all_in_directory(const std::string& dirname, stringvec& vec)
 	DIR* direc = opendir(dirname.c_str());
     struct dirent * dp;
     while ((dp = readdir(direc)) != NULL) {
-        //vec.push_back(dp->d_name);
         if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0)
         	vec.push_back(dp->d_name);
     }
