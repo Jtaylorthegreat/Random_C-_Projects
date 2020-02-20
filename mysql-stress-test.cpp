@@ -55,28 +55,28 @@ string random_string( size_t length, function<char(void)> rand_char )
 
 
 int main(int argc, char *argv[]) {
-	if (argc < 6) {
-        	cout << "Usage: ./stress-db database user password sqlserver runtime" << endl;
+	if (argc < 5) {
+        	cout << "Usage: ./stress-db user password sqlserver runtime" << endl;
         	cout << "Example to run for 3 minutes:" << endl;
-        	cout << "Example: ./stress-db testdatabase user1 password123 localhost 3" << endl;
-		cout << "Remote DB Example: ./stress-db testdatabase user1 'password123' localhost 3" << endl;
+        	cout << "Example: ./stress-db user1 password123 localhost 3" << endl;
+		cout << "Remote DB Example: ./stress-db user1 'password123' localhost 3" << endl;
         	return -1;
    	}
 	
-	if (argc > 6) {
-        	cout << "Usage: ./stress-db database user password sqlserver runtime" << endl;
+	if (argc > 5) {
+        	cout << "Usage: ./stress-db user password sqlserver runtime" << endl;
         	cout << "Example to run for 3 minutes:" << endl;
-        	cout << "Example: ./stress-db testdatabase user1 password123 localhost 3" << endl;
-		cout << "Remote DB Example: ./stress-db testdatabase user1 'password123' localhost 3" << endl;
+        	cout << "Example: ./stress-db user1 password123 localhost 3" << endl;
+		cout << "Remote DB Example: ./stress-db user1 'password123' localhost 3" << endl;
         	return -1;
    	}
 
 
-	string dbname(argv[1]);
-    string dbuser(argv[2]);
-    string dbpass(argv[3]);
-	string dbserver(argv[4]);
-	string runtimeinput(argv[5]);
+	string dbuser(argv[1]);
+    string dbpass(argv[2]);
+	string dbserver(argv[3]);
+	string runtimeinput(argv[4]);
+	string dbname = "stressdatabase";
 	int runtime;
 	runtime = stoi(runtimeinput);
 
@@ -93,11 +93,11 @@ int main(int argc, char *argv[]) {
 		sql::Statement *stmt;
 		driver = get_driver_instance();
 		con = driver->connect(dbserver.c_str(), dbuser.c_str(), dbpass.c_str());
-		con->setSchema(dbname.c_str());
-
+		
   		stmt = con->createStatement();
-  		stmt->execute("DROP TABLE IF EXISTS stresstable");
-  		stmt->execute("CREATE TABLE stresstable (userloginname varchar(50), emailaddress varchar(60), uniquekey char(36), usertime TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+  		stmt->execute("DROP DATABASE IF EXISTS stressdatabase");
+  		stmt->execute("CREATE DATABASE stressdatabase");
+  		stmt->execute("CREATE TABLE stressdatabase.stresstable (userloginname varchar(50), emailaddress varchar(60), uniquekey char(36), usertime TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
        	delete stmt;
   		delete con;
 	}  catch (sql::SQLException &e) {
@@ -107,11 +107,8 @@ int main(int argc, char *argv[]) {
            return -1;
         }
 
-	cout << "Table successfully created" << endl;
-	cout << "running Stress Test for " << runtimeinput << " minutes" << endl;
-	typedef chrono::duration<int, ratio<60,1> > minutes;
-
-
+	cout << "Database & Table successfully created" << endl;
+	cout << "Running Stress Test for " << runtimeinput << " minutes" << endl;
 
 
 	auto finish = chrono::system_clock::now() +chrono::minutes(runtime);
@@ -143,8 +140,7 @@ int main(int argc, char *argv[]) {
 
 		do {
 
-			
-	            stmt->execute("START TRANSACTION;");
+			    stmt->execute("START TRANSACTION;");
 	            stmt->execute(updatestatement.c_str());
 	            stmt->execute("COMMIT;");
 	       	
@@ -190,6 +186,26 @@ int main(int argc, char *argv[]) {
 	           cout <<  "SQLState: " << e.getSQLState() << endl;
 	           return -1;
 	        }
+
+	    try {
+			sql::Driver *driver;
+			sql::Connection *con;
+			sql::Statement *stmt;
+			driver = get_driver_instance();
+			con = driver->connect(dbserver.c_str(), dbuser.c_str(), dbpass.c_str());
+			stmt = con->createStatement();
+			stmt->execute("DROP DATABASE stressdatabase");
+		   	delete stmt;
+			delete con;
+		}  catch (sql::SQLException &e) {
+		    cout << "# ERR: " << e.what() << endl;
+		    cout << "Mysql error code: " << e.getErrorCode() << endl;
+		    cout <<  "SQLState: " << e.getSQLState() << endl;
+	        cout << "Error removing database: stressdatabase" << endl;
+	        return -1;
+	    }
+	cout << "Successfully removed database for testing" << endl;
+
 
 
   	return 0;
