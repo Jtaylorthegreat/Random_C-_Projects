@@ -25,4 +25,4 @@ mysql-stress-test:
 
 Unorderedpairs:
     
-    Basic demonstration of O(N²) runtime that iterates through each pair of values for (i, j) where j is bigger than i. 
+    Basic demonstration of O(N²) runtime that iterates through and prints each pair of values for (i, j) where j is bigger than i. 
